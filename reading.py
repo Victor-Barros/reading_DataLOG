@@ -9,13 +9,13 @@ if len(sys.argv) < 2:
 
 byte_array = []
 
-with open(sys.argv[1],"rb") as file:
-	byte = file.read(1) 
+with open(sys.argv[1],"rb") as file: #read every byte and save to a list
+	byte = file.read(1)
 	while byte:
 		byte_array.append(byte)
 		byte = file.read(1)
 
-#print(byte_array)
+
 print("File Length: "+str(len(byte_array)))
 
 #sector 2
@@ -25,10 +25,10 @@ print("Sector 2 (Channel Data): ")
 values=[[0],[0],[0],[0],[0],[0],[0],[0]] #to store analog data
 
 
-offset=512 #offset for sector 2
-nread=1<<20 
+offset=512 #offset for sector 2 (512)
+nread=1<<20 #limit of iterations 2^20
 
-for i in range(0,2*9*nread,2):
+for i in range(0,2*9*nread,2): #for each 9 lines of  16 bits
 
 	if i+offset+1 > len(byte_array): #check if it's EOF
 		print("EOF")
@@ -39,7 +39,7 @@ for i in range(0,2*9*nread,2):
 	
 	#print(str(format(int(i/2),"03d"))+": "+str(format(word,"016b")))
 	
-	#0x3f is a separator between readings
+	#digital data between readings
 	if word != 0x3f:
 		#read channel and data
 		channel = word>>13
